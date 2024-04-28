@@ -162,24 +162,6 @@ class Cityscapes(Dataset):
         
         #[verify_str_arg(value, "target_type", ("instance", "semantic", "polygon", "color"))  for value in self.target_type]
 
-        if not os.path.isdir(self.images_dir) or not os.path.isdir(self.targets_dir):
-            if split == 'train_extra':
-                image_dir_zip = os.path.join(self.root, 'leftImg8bit{}'.format('_trainextra.zip'))
-            else:
-                image_dir_zip = os.path.join(self.root, 'leftImg8bit{}'.format('_trainvaltest.zip'))
-
-            if self.mode == 'gtFine':
-                target_dir_zip = os.path.join(self.root, '{}{}'.format(self.mode, '_trainvaltest.zip'))
-            elif self.mode == 'gtCoarse':
-                target_dir_zip = os.path.join(self.root, '{}{}'.format(self.mode, '.zip'))
-
-            if os.path.isfile(image_dir_zip) and os.path.isfile(target_dir_zip):
-                extract_archive(from_path=image_dir_zip, to_path=self.root)
-                extract_archive(from_path=target_dir_zip, to_path=self.root)
-            else:
-                raise RuntimeError('Dataset not found or incomplete. Please make sure all required folders for the'
-                                   ' specified "split" and "mode" are inside the "root" directory')
-
         for city in os.listdir(self.images_dir):
             img_dir = os.path.join(self.images_dir, city)
             target_dir = os.path.join(self.targets_dir, city)
